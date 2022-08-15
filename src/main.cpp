@@ -3,7 +3,10 @@
 #include <Arduino.h>
 #include <Blinker.h>
 
+//开关按键引脚
 const int SwitchKey = 4;
+
+//状态检测引脚
 const int PowerState = 12;
 
 char auth[] = "";
@@ -12,6 +15,14 @@ char pswd[] = "";
 
 BlinkerButton Button1("ButtonKey");
 
+/**
+  * @file    main.cpp
+  * @brief   开关机按键回调函数
+  * @param   unknow
+  * @return  None
+  * @version v1.0.0
+  * @date    2022-08-15
+  */
 void Button1Callback(const String & state)
 {
     if(state == "on" && digitalRead(PowerState) == 0)
@@ -50,6 +61,15 @@ void Button1Callback(const String & state)
     }
 }
 
+
+/**
+  * @file    main.cpp
+  * @brief   心跳包函数
+  * @param   None
+  * @return  None
+  * @version v1.0.0
+  * @date    2022-08-15
+  */
 void heartbeat()
 {
     if (digitalRead(PowerState) == HIGH)
@@ -64,11 +84,29 @@ void heartbeat()
     }
 }
 
+
+/**
+  * @file    main.cpp
+  * @brief   状态引脚检测中断服务函数
+  * @param   None
+  * @return  None
+  * @version v1.0.0
+  * @date    2022-08-15
+  */
 ICACHE_RAM_ATTR void Funcation()
 {
   heartbeat();
 }
 
+
+/**
+  * @file    main.cpp
+  * @brief   初始化函数
+  * @param   None
+  * @return  None
+  * @version v1.0.0
+  * @date    2022-08-15
+  */
 void setup()
 {
     pinMode(2,OUTPUT);
@@ -82,6 +120,15 @@ void setup()
     attachInterrupt(digitalPinToInterrupt(12),Funcation,CHANGE);
 }
 
+
+/**
+  * @file    main.cpp
+  * @brief   主循环函数
+  * @param   None
+  * @return  None
+  * @version v1.0.0
+  * @date    2022-08-15
+  */
 void loop()
 {
     Blinker.run();
